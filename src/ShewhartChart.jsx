@@ -44,7 +44,7 @@ const ShewhartChart = ({ data, mean, stdDev }) => {
             name: entry.name,
             value: entry.value,
             color,
-            status: isOutOfRange ? "out of range" : "okay",
+            status: isOutOfRange ? "out" : "ok",
         };
     });
 
@@ -107,9 +107,11 @@ const ShewhartChart = ({ data, mean, stdDev }) => {
                 <h3>Data Table</h3>
                 <DataGrid
                     dataSource={chartData}
-                    keyExpr="name" // or another unique field if available
+                    keyExpr="index" // or another unique field if available
                     height="100%"
                     showBorders={true}
+                    allowFiltering={true}
+                    
                     rowAlternationEnabled={true}
                     focusedRowEnabled={true}
                     onFocusedRowChanged={(e) => setSelectedIndex(e.rowIndex)}
@@ -130,11 +132,12 @@ const ShewhartChart = ({ data, mean, stdDev }) => {
                     {/* ✅ Define columns */}
                     <Column
                         dataField="name"
+                    allowFiltering={true}    
+                        
                         caption="Name"
-                        cellRender={({ data }) => (
-                            <span style={{ color: data.color }}>{data.name}</span>
-                        )}
-                    />  <Column
+                        width={90}
+                    /> 
+                     <Column
                         dataField="value"
                         caption="Value"
                         dataType="number"
@@ -145,12 +148,14 @@ const ShewhartChart = ({ data, mean, stdDev }) => {
                     />
                     <Column
                         dataField="status"
+                        width={60}
+                   
                         caption="Status"
                         alignment="center"
                         cellRender={({ data }) => (
                             <span
                                 style={{
-                                    color: data.status === "out of range" ? "red" : "green",
+                                    color: data.status === "out" ? "red" : "green",
                                 }}
                             >
               {data.status}
